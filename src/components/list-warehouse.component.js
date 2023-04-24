@@ -35,7 +35,7 @@ export default class WarehouseList extends Component {
           <tr>
             <th>Name</th>
             <th>Zone</th>
-            <th>Shelf</th>
+            <th>Shelves</th>
             <th>ID</th>
           </tr>
         </thead>

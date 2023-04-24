@@ -8,7 +8,7 @@ let warehouseSchema = require('../Models/Warehouse');
 
 // CREATE Warehouse
 async function createWarehouse(req) {
-  const Warehouses = await warehouseSchema.create({name:req.body.name, zone:req.body.zone, shelf:req.body.shelf});
+  const Warehouses = await warehouseSchema.create({name:req.body.name, zone:req.body.zone, shelves:req.body.shelves});
   return Warehouses;
 };
 router.post('/create-warehouse', function (req, res) {

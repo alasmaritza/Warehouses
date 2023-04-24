@@ -7,7 +7,7 @@ let warehouseSchema = new Schema({
   zone: {
     type: Number,
   },
-  shelf: {
+  shelves: {
     type: Object,
   }
 }, {

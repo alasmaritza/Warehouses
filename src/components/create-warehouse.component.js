@@ -13,10 +13,10 @@ export default class CreateWarehouse extends Component {
     // Setting up state
     this.state = {
       name: '',
-      zone: 1,
-      shelf: {
+      zones: 1,
+      shelves: [{
         name: '',
-      }
+      }]
     }
   }
 
@@ -24,15 +24,22 @@ export default class CreateWarehouse extends Component {
     this.setState({ name: e.target.value })
   }
   onChangeShelfName(e) {
-  this.setState({ shelf: {name: e.target.value} })
+   this.setState({shelves: e.target.value});
   }
 
   onSubmit(e) {
+    let shelfArray = this.state.shelves.split(',');
+    let shelfArrayUnique = [...new Set(shelfArray)];
+    let shelves = [];
+    for (let i = 0; i < shelfArrayUnique.length; i ++) {
+      shelves.push({name: shelfArrayUnique[i]});
+    }
+
     e.preventDefault()
     const warehouseObject = {
       name: this.state.name,
       zone: this.state.zone,
-      shelf: this.state.shelf,
+      shelves: shelves,
     };
     console.log(warehouseObject);
     axios.post('http://localhost:4000/warehouses/create-warehouse', warehouseObject)
@@ -58,15 +65,15 @@ export default class CreateWarehouse extends Component {
           >
             {(function (rows, i, len) {
               while (++i <= len) {
-                rows.push(<option value={i}>{i}</option>)
+                rows.push(<option key={i} value={i}>{i}</option>)
               }
               return rows;
             })([], 0, 12)}
           </Form.Control>
         </Form.Group>
         <Form.Group controlId="Shelves">
-          <Form.Label>Shelves</Form.Label>
-          <Form.Control type="text" value={this.state.shelf.name} onChange={this.onChangeShelfName} />
+          <Form.Label>Shelves -- add up to 12 shelf names, separated by commas</Form.Label>
+          <Form.Control type="text" value={this.state.shelves.name} onChange={this.onChangeShelfName}/>
         </Form.Group>
         <Button variant="danger" size="lg" block="block" type="submit" className="mt-4">
           Create Warehouse
