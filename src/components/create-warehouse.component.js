@@ -41,9 +41,9 @@ export default class CreateWarehouse extends Component {
       zone: this.state.zone,
       shelves: shelves,
     };
-    console.log(warehouseObject);
+
     axios.post('http://localhost:4000/warehouses/create-warehouse', warehouseObject)
-      .then(res => console.log(res.data));
+      .then(res => console.log(res.data)).catch((err) => {console.log("Error: ", err.message)});
     this.setState({ name: '', zone: 1})
   }
   render() {
@@ -72,7 +72,7 @@ export default class CreateWarehouse extends Component {
           </Form.Control>
         </Form.Group>
         <Form.Group controlId="Shelves">
-          <Form.Label>Shelves -- add up to 12 shelf names, separated by commas</Form.Label>
+          <Form.Label>Shelves -- add up to 10 shelf names, separated by commas</Form.Label>
           <Form.Control type="text" value={this.state.shelves.name} onChange={this.onChangeShelfName}/>
         </Form.Group>
         <Button variant="danger" size="lg" block="block" type="submit" className="mt-4">

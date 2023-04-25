@@ -1,20 +1,38 @@
 let mongoose = require('mongoose'),
   express = require('express'),
   router = express.Router();
-
+const Schema = mongoose.Schema;
 // Warehouse Model
-let warehouseSchema = require('../Models/Warehouse');
+let warehouseSchema = new Schema({
+  name: {
+    type: String,
+    required: [true, 'Warehouse name is required'],
+  },
+  zone: {
+    type: Number,
+    required: [true],
+    min: 1,
+    max: 12
+  },
+  shelves: {
+    type: Array,
+    max: [10, 'Max allowed is 10, got {VALUE}']
+  }
+}, {
+    collection: 'warehouses'
+  })
 
+let Warehouse = mongoose.model('Warehouse', warehouseSchema);
 
 // CREATE Warehouse
-async function createWarehouse(req) {
-  const Warehouses = await warehouseSchema.create({name:req.body.name, zone:req.body.zone, shelves:req.body.shelves});
-  return Warehouses;
-};
-router.post('/create-warehouse', function (req, res) {
-  createWarehouse(req).then(function(response) {
-    res.json({response: response});
-  })
+router.post('/create-warehouse', async (req, res) => {
+  const Warehouses = new Warehouse({name:req.body.name, zone:req.body.zone, shelves:req.body.shelves});
+  try {
+  await Warehouses.save();
+  res.status(200).send(Warehouses);
+  } catch (err) {
+    return res.status(400).send(err);
+  }
 });
 
 // READ Warehouses
